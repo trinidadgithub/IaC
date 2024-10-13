@@ -22,6 +22,10 @@ This repository contains a collection of infrastructure-as-code (IaC) projects a
 - **terraform-aws-eks/**  
   Contains work specific to deploying AWS EKS (Elastic Kubernetes Service) using Terraform. This directory provides scripts and configurations to automate the setup of a complete EKS cluster on AWS.
 
+- **terraform-docker-iot/**
+
+  Illustrates how to deploy an AWS IoT thing (python based) on Docker using Terraform
+
 ## Getting Started
 
 To work with any of the directories, navigate to the respective folder and follow the individual instructions provided in their `README.md` files. General requirements for each component may include:
