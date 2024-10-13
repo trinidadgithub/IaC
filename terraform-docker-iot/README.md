@@ -25,7 +25,7 @@ terraform-docker-iot/
 
 1. **Docker**: Install Docker from [Docker's official website](https://docs.docker.com/get-docker/).
 2. **Terraform**: Install Terraform from [Terraform's website](https://www.terraform.io/downloads).
-3. **AWS IoT Core SDK**: You must download and set up the AWS IoT Core Python SDK. [AWS IoT Core SDK](https://us-east-2.console.aws.amazon.com/iot/home?region=us-east-2#/connectdevice)
+3. **AWS IoT Core SDK**: You must download and set up the AWS IoT Core Python SDK. [AWS IoT Core SDK](https://docs.aws.amazon.com/iot/latest/developerguide/iot-sdks.html)
 4. **AWS IoT Configuration**: Ensure your AWS IoT policy, certificates, and device settings are correctly configured.
 
 ---
