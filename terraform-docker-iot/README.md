@@ -168,3 +168,35 @@ resource "docker_container" "iot_container" {
 3. Terraform Volume Mount Issues
 
     Ensure all volume paths are absolute. Terraform uses ${abspath()} to resolve relative paths.
+
+## How to Clean Up Resources
+
+To stop and remove the Docker container, use:
+
+```bash
+terraform destroy
+```
+Confirm with yes when prompted.
+
+### **Future Improvements**
+
+    - Add CI/CD pipelines to automate container deployment.
+    - Deploy the IoT container to AWS ECS or Azure Container Instances using Terraform.
+    - Implement health checks for the container to monitor uptime and performance.
+
+### License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+### Contributing
+
+Pull requests are welcome! For major changes, please open an issue first to discuss what you would like to change.
+### Contact
+
+For questions or support, contact trinidad.marroquin@gmail.com.
+
+---
+This **README.md** covers everything needed to run, troubleshoot, and extend your IoT project. Let me know if any further modifications are required!
+
+
+
