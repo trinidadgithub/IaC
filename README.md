@@ -34,10 +34,21 @@ This repository contains a collection of infrastructure-as-code (IaC) projects a
 
 To work with any of the directories, navigate to the respective folder and follow the individual instructions provided in their `README.md` files. General requirements for each component may include:
 
-- **AWS CLI**: Ensure you have the AWS CLI configured for interaction with AWS services.
+- **AWS CLI**: Ensure you have the AWS CLI configured for interaction with AWS services for projects related to AWS.
+- **Azure CLI**:  For projects related to Azure.
+- **Google Cloud Platform**: for projects related to GCP.
 - **Terraform**: Install [Terraform](https://www.terraform.io/downloads.html) for infrastructure provisioning.
 - **Docker**: Ensure Docker is installed and running for any Docker-related projects.
 - **Helm**: Install [Helm](https://helm.sh/docs/intro/install/) for managing Kubernetes applications.
+- **IDE**: An integrated development environment such as Visual Code, IntelliJ, or Pycharm.
+- **Programming Languages**:  Python, C, Go, JavaScript, Java, .Net (core), and or Typescript, etc. for writing basic programs
+- **Programming Frameworks**: Python: Django, Flask, Pytorc, Go: Gin, Echo, Beego; Javascript:  React, angular, Next.js, etc.
+
+Optional:
+
+- Oracle's Virtual Box:  If you don't want to install any tools on your workstation
+- Git Bash:  For quick linux like commands on a Windows machine
+- Package Managers:  Like NPM for Javascript, etc.
 
 ## License
 
