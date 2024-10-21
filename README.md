@@ -26,9 +26,9 @@ This repository contains a collection of infrastructure-as-code (IaC) projects a
 
   Illustrates how to deploy an AWS IoT thing (python based) on Docker using Terraform
 
-- **Site Reliability Engineering**
+- **sre/**
 
-  Practical information for becomming a successful SRE professional
+  Practical information for becomming a successful Site Reliability Engineering professional
 
 ## Getting Started
 
