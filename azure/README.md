@@ -55,7 +55,7 @@ Verify the installation:
     * Azure Functions: Create and manage serverless Azure Functions.
     * Azure Storage: Interact with Azure Storage resources like blobs and tables.
 
-4. **Install .NET SDK**:  Azure supports many applications built with .NET. To develop and deploy .NET applications, install the .NET SDK:
+4. **Install .NET SDK**:  Azure supports many applications built with .NET. To develop and deploy .NET applications, install the [.NET SDK](https://dotnet.microsoft.com/en-us/download):
 
 
     Download and install the .NET SDK: Go to Download .NET and follow the installation instructions.
