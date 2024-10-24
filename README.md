@@ -7,6 +7,12 @@ This repository contains a collection of infrastructure-as-code (IaC) projects a
 - **aws/**  
   Contains general work related to AWS features and services. This directory includes scripts, configurations, and IaC files for various AWS components.
 
+- **azure/**
+  Contains information regarding how to setup your Windows workstation to be running Azure CLI commands.
+
+- **concourse-terraform/**
+  A study on deploying concourse as a docker container.  A second study will deploy concourse to a dedicated Ubuntu server.
+
 - **docker/**  
   Holds Docker-related work, primarily focused on containerizing AWS features and deploying containerized applications within the AWS ecosystem.
 
@@ -43,6 +49,7 @@ To work with any of the directories, navigate to the respective folder and follo
 - **IDE**: An integrated development environment such as Visual Code, IntelliJ, or Pycharm.
 - **Programming Languages**:  Python, C, Go, JavaScript, Java, .Net (core), and or Typescript, etc. for writing basic programs
 - **Programming Frameworks**: Python: Django, Flask, Pytorc, Go: Gin, Echo, Beego; Javascript:  React, angular, Next.js, etc.
+- **Oracle's Virtual Box**: Used to manage and deploy services to virtual machines.
 
 Optional:
 
