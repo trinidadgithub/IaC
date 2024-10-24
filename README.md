@@ -1,6 +1,6 @@
 # Project Overview
 
-This repository contains a collection of infrastructure-as-code (IaC) projects and related tools for deploying and managing various services on AWS. Each directory represents a specific area of focus, leveraging technologies such as Docker, Terraform, Helm, and Kubernetes. Below is a breakdown of each component:
+This repository contains a collection of infrastructure-as-code (IaC) projects and related tools for deploying and managing various services. Each directory represents a specific area of focus, leveraging technologies such as Docker, Terraform, Helm, and Kubernetes. Below is a breakdown of each component:
 
 ## Directory Structure
 
