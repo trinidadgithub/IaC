@@ -1,0 +1,16 @@
+resource_types:
+- name: time
+  type: registry-image
+  source:
+    repository: concourse/time-resource
+
+resources:
+- name: test-timer
+  type: time
+  source:
+    interval: 1m
+
+jobs:
+- name: test-job
+  plan:
+  - get: test-timer
