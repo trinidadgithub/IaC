@@ -1,15 +1,7 @@
 FROM concourse/concourse
 
-# Copy the worker keys
-COPY keys/worker_key /concourse-keys/worker_key
-COPY keys/worker_key.pub /concourse-keys/worker_key.pub
-COPY keys/tsa_host_key.pub /concourse-keys/tsa_host_key.pub
+# Create directories for keys
+RUN mkdir -p /concourse-keys
 
-RUN chmod 600 /concourse-keys/worker_key && \
-    chmod 644 /concourse-keys/worker_key.pub /concourse-keys/tsa_host_key.pub
-
-# Environment variables for Concourse worker
-ENV CONCOURSE_TSA_PUBLIC_KEY=/concourse-keys/tsa_host_key.pub \
-    CONCOURSE_WORKER_TSA_WORKER_PRIVATE_KEY=/concourse-keys/worker_key
-
+# Default entrypoint for the container
 ENTRYPOINT ["dumb-init", "/usr/local/concourse/bin/concourse", "worker"]
