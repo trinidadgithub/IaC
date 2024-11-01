@@ -1,0 +1,15 @@
+FROM concourse/concourse
+
+# Copy the TSA host keys and authorized worker keys
+COPY keys/tsa_host_key /concourse-keys/tsa_host_key
+COPY keys/tsa_host_key.pub /concourse-keys/tsa_host_key.pub
+COPY keys/authorized_worker_keys /concourse-keys/authorized_worker_keys
+
+RUN chmod 600 /concourse-keys/tsa_host_key && \
+    chmod 644 /concourse-keys/tsa_host_key.pub /concourse-keys/authorized_worker_keys
+
+# Environment variables for Concourse web
+ENV CONCOURSE_TSA_AUTHORIZED_KEYS=/concourse-keys/authorized_worker_keys \
+    CONCOURSE_TSA_HOST_KEY=/concourse-keys/tsa_host_key
+
+ENTRYPOINT ["dumb-init", "/usr/local/concourse/bin/concourse", "web"]
