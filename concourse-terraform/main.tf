@@ -19,6 +19,7 @@ resource "docker_network" "concourse_network" {
   name = "concourse-network"
 }
 
+# Create the backend Concourse database
 resource "docker_container" "concourse_db" {
   name  = "concourse-db"
   image = "postgres:13"
@@ -109,31 +110,31 @@ resource "docker_container" "concourse_worker" {
   depends_on = [docker_container.concourse_web]
 }
 
-
-resource "local_file" "worker_public_key" {
-  content  = tls_private_key.worker_key.public_key_pem
-  filename = abspath("${path.module}/keys/worker_key.pub")
-}
-
+# Store the worker's private key locally
+# Add a two second sleep to ensure the file creation completes before provisioning
+# Adjust sleep as needed.
 resource "local_file" "worker_key" {
   content  = tls_private_key.worker_key.private_key_pem
   filename = abspath("${path.module}/keys/worker_key")
 
   provisioner "local-exec" {
-    command = <<EOT
-      powershell -Command "
-      \$PrivateKeyPath = '${path.module}/keys/worker_key';
-      icacls \$PrivateKeyPath /remove 'NT AUTHORITY\\Authenticated Users';
-      icacls \$PrivateKeyPath /inheritance:r;
-      icacls \$PrivateKeyPath /grant:r '$env:USERNAME:(R)'
-      "
-    EOT
+    command = "powershell Start-Sleep -Seconds 2; powershell -File ${path.module}/scripts/set_permissions.ps1 -PrivateKeyPath '${path.module}/keys/worker_key'"
   }
+
+  depends_on = [tls_private_key.worker_key]
 }
 
+# Generate the worker's public key in PEM format
+resource "local_file" "worker_public_key" {
+  content  = tls_private_key.worker_key.public_key_pem
+  filename = abspath("${path.module}/keys/worker_key.pub")
+}
 
+# External data source to convert PEM private key to SSH public key format
 data "external" "worker_public_key_ssh" {
   program = ["powershell", "./scripts/convert_to_ssh_format.ps1", abspath("${path.module}/keys/worker_key")]
+
+  depends_on = [local_file.worker_key]  # Ensure worker_key is created first
 }
 
 # Use the converted SSH key for authorized_worker_keys
@@ -146,7 +147,3 @@ resource "local_file" "session_signing_key" {
   content = tls_private_key.session_signing_key.private_key_pem
   filename = abspath("${path.module}/keys/session_signing_key")
 }
-
-
-
-
