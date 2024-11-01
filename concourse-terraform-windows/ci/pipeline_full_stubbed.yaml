@@ -1,0 +1,175 @@
+build_client_api_service_vars:
+  AWS_ACCESS_KEY_ID: ((aws-pea-aux-helm-charts-writer-access-key-id))
+  AWS_SECRET_ACCESS_KEY: ((aws-pea-aux-helm-charts-writer-secret-access-key))
+  DIR: helm
+groups:
+- jobs:
+  - create-version
+  - push-images-and-helm
+  name: build
+- jobs:
+  - run-unit-tests-cadence-client-api
+  - linting
+  name: check-pr
+jobs:
+- name: create-version
+  plan:
+  - get: git-repo
+    trigger: true
+  - get: tooling-repo
+  - params:
+      bump: patch
+    put: version
+  public: true
+- name: push-images-and-helm
+  plan:
+  - in_parallel:
+    - get: git-repo
+      passed:
+      - create-version
+      trigger: true
+    - get: tooling-repo
+    - get: version
+  - file: tooling-repo/oci-build-task/aws-task.yaml
+    params:
+      CONTEXT: git-repo
+    privileged: true
+    task: build-cadence-client-api-image
+  - inputs:
+    - image
+    - version
+    params:
+      additional_tags: version/number
+      image: image/image.tar
+    put: ecr-image-cadence-client-api
+  - file: tooling-repo/helm-package/aws-task.yml
+    params:
+      AWS_ACCESS_KEY_ID: ((aws-pea-aux-helm-charts-writer-access-key-id))
+      AWS_SECRET_ACCESS_KEY: ((aws-pea-aux-helm-charts-writer-secret-access-key))
+      DIR: helm
+    task: package-cadence-client-api-helm
+  - params:
+      only_tag: true
+      repository: git-repo
+      tag: version/number
+    put: git-repo
+  public: true
+- name: run-unit-tests-cadence-client-api
+  plan:
+  - in_parallel:
+    - get: git-repo-pr
+      trigger: true
+      version: every
+    - get: tooling-repo
+  - params:
+      context: run-unit-tests-cadence-client-api
+      path: git-repo-pr
+      status: pending
+    put: git-repo-pr
+  - config:
+      image_resource:
+        source:
+          repository: golang
+          tag: 1.22-alpine3.18
+        type: registry-image
+      inputs:
+      - name: git-repo-pr
+      platform: linux
+      run:
+        args:
+        - -exc
+        - apk update && apk add build-base && cd git-repo-pr && go test $(go list
+          ./... | grep -v "integration-test") -tags musl -count 1 -race -coverprofile=cover.out
+          && go build -tags musl -o /dev/null .
+        path: /bin/sh
+    on_failure:
+      params:
+        context: run-unit-tests-cadence-client-api
+        path: git-repo-pr
+        status: failure
+      put: git-repo-pr
+    task: run-unit-tests-cadence-client-api
+  - params:
+      context: run-unit-tests-cadence-client-api
+      path: git-repo-pr
+      status: success
+    put: git-repo-pr
+  public: true
+- name: linting
+  plan:
+  - in_parallel:
+    - get: git-repo-pr
+      trigger: true
+      version: every
+    - get: tooling-repo
+  - params:
+      context: linting
+      path: git-repo-pr
+      status: pending
+    put: git-repo-pr
+  - file: tooling-repo/linting/aws-task.yaml
+    input_mapping:
+      git-repo: git-repo-pr
+    on_failure:
+      params:
+        context: linting
+        path: git-repo-pr
+        status: failure
+      put: git-repo-pr
+    task: linting
+  - params:
+      context: linting
+      path: git-repo-pr
+      status: success
+    put: git-repo-pr
+resource_types:
+- name: pull-request
+  source:
+    aws_access_key_id: ((aws-pea-aux-ecr-reader-access-key-id))
+    aws_region: us-east-2
+    aws_secret_access_key: ((aws-pea-aux-ecr-reader-secret-access-key))
+    repository: concourse-tooling-github-pr-resource
+  type: registry-image
+resources:
+- name: git-repo
+  source:
+    branch: main
+    ignore_paths:
+    - README.md
+    - docker-compose.*
+    - Dockerfile.dev
+    - .gitignore
+    - ci/**
+    password: x-oauth-basic
+    uri: https://github.com/NBCUDTC/cadence-client-api-src.git
+    username: ((git-access-token-nbcudtc))
+  type: git
+  webhook_token: ((concourse-webhook-token))
+- name: tooling-repo
+  source:
+    branch: master
+    private_key: ((git-key-sre-ci-concourse-tooling))
+    uri: git@github.com:NBCUDTC/sre-ci-concourse-tooling.git
+  type: git
+- name: ecr-image-cadence-client-api
+  source:
+    aws_access_key_id: ((aws-pea-aux-ecr-writer-access-key-id))
+    aws_region: us-east-2
+    aws_secret_access_key: ((aws-pea-aux-ecr-writer-secret-access-key))
+    repository: cadence-client-api-deploy
+  type: registry-image
+- name: version
+  source:
+    branch: master
+    driver: git
+    file: cadence-client-api
+    initial_version: 0.0.1
+    private_key: ((git-key-sre-ci-concourse-semver))
+    uri: git@github.com:NBCUDTC/sre-ci-concourse-semver.git
+  type: semver
+- name: git-repo-pr
+  source:
+    access_token: ((git-access-token-nbcudtc))
+    repository: NBCUDTC/cadence-client-api-src
+  type: pull-request
+  webhook_token: ((concourse-webhook-token))
