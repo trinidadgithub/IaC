@@ -55,7 +55,8 @@ resource "docker_container" "concourse_web" {
     "CONCOURSE_EXTERNAL_URL=http://localhost:8080",
     "CONCOURSE_ADD_LOCAL_USER=admin:admin",
     "CONCOURSE_MAIN_TEAM_LOCAL_USER=admin",
-    "CONCOURSE_TSA_AUTHORIZED_KEYS=/concourse-public/authorized_worker_keys"
+    "CONCOURSE_TSA_AUTHORIZED_KEYS=/concourse-public/authorized_worker_keys",
+    "CONCOURSE_TSA_HOST_KEY=/concourse-keys/tsa_host_key"
   ]
 
   command = ["web"]
@@ -63,6 +64,11 @@ resource "docker_container" "concourse_web" {
   volumes {
     host_path      = abspath("${path.module}/keys/authorized_worker_keys")
     container_path = "/concourse-public/authorized_worker_keys"
+  }
+
+    volumes {
+    host_path      = abspath("${path.module}/keys/tsa_host_key")
+    container_path = "/concourse-public/tsa_host_key"
   }
 
   ports {
@@ -74,7 +80,7 @@ resource "docker_container" "concourse_web" {
     name = docker_network.concourse_network.name
   }
 
-  depends_on = [docker_container.concourse_db]
+  depends_on = [docker_container.concourse_db, data.external.worker_public_key_ssh]
 }
 
 # Worker Container
