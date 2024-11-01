@@ -10,8 +10,11 @@ This repository contains a collection of infrastructure-as-code (IaC) projects a
 - **azure/**
   Contains information regarding how to setup your Windows workstation to be running Azure CLI commands.
 
-- **concourse-terraform/**
-  A study on deploying concourse as a docker container.  A second study will deploy concourse to a dedicated Ubuntu server.
+- **concourse-terraform-windows/**
+  A study on deploying concourse as a docker container framework on Windows.  
+
+- **concourse-terraform-unix/**
+  A study on deploying concourse as a docker container framework on Windows.  
 
 - **docker/**  
   Holds Docker-related work, primarily focused on containerizing AWS features and deploying containerized applications within the AWS ecosystem.
