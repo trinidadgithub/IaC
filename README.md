@@ -39,6 +39,8 @@ This repository contains a collection of infrastructure-as-code (IaC) projects a
 
   Practical information for becoming a successful Site Reliability Engineering professional
 
+- **[DevOps](./docs/DevOps.md)/**
+
 ## Getting Started
 
 To work with any of the directories, navigate to the respective folder and follow the individual instructions provided in their `README.md` files. General requirements for each component may include:
