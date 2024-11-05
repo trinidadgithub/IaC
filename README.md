@@ -37,7 +37,7 @@ This repository contains a collection of infrastructure-as-code (IaC) projects a
 
 - **sre/**
 
-  Practical information for becomming a successful Site Reliability Engineering professional
+  Practical information for becoming a successful Site Reliability Engineering professional
 
 ## Getting Started
 
