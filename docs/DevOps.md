@@ -1,4 +1,5 @@
-1. What is DevOps?
+![image](IC-DevOps-Venn-Diagram.png)
+2. What is DevOps?
 Definition: DevOps is a set of practices that combines software development (Dev) and IT operations (Ops) to shorten the development lifecycle while delivering high-quality software continuously.
 Key Resource:
    - Atassian DevOps Overview: https://www.atlassian.com/devops
@@ -69,7 +70,9 @@ Key Resource:
     - Key Resource:
         - DevOps Culture and Mindset (Google Cloud): https://cloud.google.com/devops/culture
         - What is DevOps Culture? (Atlassian): https://www.atlassian.com/devops/devops-culture
+      
 **Bonus Resources for Learning DevOps:**
-        - DevOps Handbook: https://itrevolution.com/the-devops-handbook/
-        - DevOps Roadmap by Roadmap.sh: https://roadmap.sh/devops
-        - Azure Devops: https://github.com/microsoft/terraform-provider-azuredevops
+- DevOps Handbook: https://itrevolution.com/the-devops-handbook/
+- DevOps Roadmap by Roadmap.sh: https://roadmap.sh/devops
+- Azure Devops: https://github.com/microsoft/terraform-provider-azuredevops
+- DevOps Primer:  https://www.smartsheet.com/devops
