@@ -1,4 +1,4 @@
-![image](IC-DevOps-Venn-Diagram.png)
+# Developer Operations
 1. What is DevOps?
 Definition: DevOps is a set of practices that combines software development (Dev) and IT operations (Ops) to shorten the development lifecycle while delivering high-quality software continuously.
 Key Resource:
