@@ -1,0 +1,5 @@
+Hello, I’m Trinidad, a seasoned Site Reliability Engineer and DevOps Practice Lead with over eight years of experience in building, optimizing, and managing robust infrastructure for high-demand systems. I specialize in cloud architecture, container orchestration, and automation tools, with expertise across AWS, Azure, Docker, Kubernetes, and Terraform.
+
+Throughout my career, I’ve led efforts in automating complex deployments, enhancing system resilience, and implementing Infrastructure as Code to streamline operations and reduce costs. My hands-on experience includes scaling IoT solutions, setting up monitoring frameworks, and deploying multi-cloud solutions, all while fostering a culture of reliability and innovation.
+
+I’m passionate about leveraging technology to drive operational excellence and efficiency and am excited to bring my expertise to a forward-thinking organization where I can contribute to impactful, high-stakes projects and continue evolving in a challenging environment.
