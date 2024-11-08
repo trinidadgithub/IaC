@@ -4,7 +4,7 @@ Throughout my career, I’ve led efforts in automating complex deployments, enha
 
 I’m passionate about leveraging technology to drive operational excellence and efficiency and am excited to bring my expertise to a forward-thinking organization where I can contribute to impactful, high-stakes projects and continue evolving in a challenging environment.
 
-Below you will some solid mitigration strategies to consider when deploiying changes to a system to minimize the impact of a failed deployment:
+Below you will find some solid mitigation strategies to consider when deploying changes to a system to minimize the impact of a failed deployment:
 
 1. Blue-Green Deployment
 
