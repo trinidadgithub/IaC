@@ -53,16 +53,16 @@ docker compose restart nginx
 
 Verify the Active Environment:  Refresh http://localhost in your browser to see the change. You should now see the Green version.
 
-Project Overview
+#### Project Overview
 
-    Blue and Green Containers: The Blue and Green directories each contain a simple Python Flask application that displays either "Blue Version" or "Green Version."
-    NGINX Proxy: NGINX acts as a reverse proxy, routing requests to either the Blue or Green container based on the configuration.
-    Docker Compose: Docker Compose orchestrates the containers and allows easy switching between versions by restarting NGINX.
+- Blue and Green Containers: The Blue and Green directories each contain a simple Python Flask application that displays either "Blue Version" or "Green Version."
+- NGINX Proxy: NGINX acts as a reverse proxy, routing requests to either the Blue or Green container based on the configuration.
+- Docker Compose: Docker Compose orchestrates the containers and allows easy switching between versions by restarting NGINX.
 
-Why Blue-Green Deployment?
+#### Why Blue-Green Deployment?
 
 Blue-Green deployments reduce downtime by keeping two identical environments live. Changes are deployed to the inactive environment (Green), tested, and then traffic is switched over once it's confirmed stable. If issues arise, you can revert traffic to the original environment (Blue) without affecting the user experience.
 
-### License
+#### License
 
 This project is open source and available under the MIT License.
