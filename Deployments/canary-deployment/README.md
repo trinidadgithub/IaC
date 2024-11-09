@@ -122,3 +122,5 @@ curl http://localhost
 Observe that some responses will show "Version 1 of API" while a subset of requests will receive "Version 2 of API," simulating a canary deployment.
 
 ![Curl Results](canaryResults.png)
+
+This setup demonstrates a canary deployment in a local Docker environment with traffic partially directed to a new version for testing stability.
