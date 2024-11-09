@@ -1,0 +1,23 @@
+version: '3'
+services:
+  v1:
+    build:
+      context: ./v1
+    ports:
+      - "8081:8080"
+
+  v2:
+    build:
+      context: ./v2
+    ports:
+      - "8082:8080"
+
+  haproxy:
+    image: haproxy:latest
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    ports:
+      - "80:80"
+    depends_on:
+      - v1
+      - v2
