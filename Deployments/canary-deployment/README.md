@@ -121,4 +121,4 @@ curl http://localhost
 
 Observe that some responses will show "Version 1 of API" while a subset of requests will receive "Version 2 of API," simulating a canary deployment.
 
-![Curl Results](curlResults.png)
+![Curl Results](canaryResults.png)
