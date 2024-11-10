@@ -21,7 +21,7 @@ Below you will find some solid mitigation strategies to consider when deploying 
     Overview: Deploy features turned off by default and toggle them on gradually.
     Mitigation: If a failure occurs, toggle the feature off without needing a full rollback.
 
-4. [Rolling Back to a Stable Version](./feature-toggle)
+4. [Rolling Back to a Stable Version](./rollback-deployment)
 
     Overview: Have a backup of the last stable version that can quickly replace the new one.
     Mitigation: In case of issues, deploy the stable version to restore functionality quickly. Automated rollbacks can make this faster and more reliable.
