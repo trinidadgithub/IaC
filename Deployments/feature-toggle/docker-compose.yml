@@ -1,0 +1,13 @@
+version: '3'
+services:
+  c_app:
+    build:
+      context: ./c_app
+    environment:
+      - FEATURE_ENABLED=false   # Set this to "false" to disable the feature
+
+  python_app:
+    build:
+      context: ./python_app
+    environment:
+      - FEATURE_ENABLED=false   # Set this to "false" to disable the feature
