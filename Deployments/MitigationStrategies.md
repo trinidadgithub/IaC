@@ -6,22 +6,22 @@ I’m passionate about leveraging technology to drive operational excellence and
 
 Below you will find some solid mitigation strategies to consider when deploying changes to a system to minimize the impact of a failed deployment:
 
-1. Blue-Green Deployment
+1. [Blue-Green Deployment](./blue-green-simulation)
 
     Overview: Maintain two identical environments: "Blue" (live) and "Green" (new deployment).
     Mitigation: Deploy changes to the Green environment, test thoroughly, and switch traffic only if everything is verified. If an issue arises, switch back to the Blue environment.
 
-2. Canary Deployment
+2. [Canary Deployment](./canary-deployment)
 
     Overview: Roll out changes to a small subset of users first.
     Mitigation: Monitor closely for errors. If issues are detected, halt the rollout, fix issues, and avoid exposing the entire user base.
 
-3. Feature Toggles/Flags
+3. [Feature Toggles/Flags](./feature-toggle)
 
     Overview: Deploy features turned off by default and toggle them on gradually.
     Mitigation: If a failure occurs, toggle the feature off without needing a full rollback.
 
-4. Rolling Back to a Stable Version
+4. [Rolling Back to a Stable Version](./feature-toggle)
 
     Overview: Have a backup of the last stable version that can quickly replace the new one.
     Mitigation: In case of issues, deploy the stable version to restore functionality quickly. Automated rollbacks can make this faster and more reliable.
