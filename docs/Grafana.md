@@ -29,8 +29,9 @@
 10. Cloud and Self-Hosted Options  
     • Grafana Cloud: Grafana offers a managed cloud service, providing scalability, security, and ease of use without the need to manage your infrastructure.  
     • Self-Hosted: You can also deploy Grafana on your own servers, giving you complete control over the setup and configuration.  
-Common Use Cases for Grafana  
+11. Common Use Cases for Grafana  
     • Infrastructure Monitoring: Visualizing metrics from Prometheus, InfluxDB, or other monitoring systems to track infrastructure performance and health.  
     • Application Performance Monitoring: Monitoring application metrics and performance using data from APM tools.  
     • Business Analytics: Building business dashboards using data from SQL databases, Google Analytics, or other data sources.  
+
 Grafana's flexibility, broad integration capabilities, and powerful visualization options make it an excellent tool for monitoring, analytics, and observability across various environments.  
