@@ -24,6 +24,5 @@
 [Puppet](Puppet.md)<br>
 [GoLang](GoLang.md)<br>
 [Pycharm IDE](PycharmIDE.md)<br>
-[Machine Learning](MachineLearning.md)<br>
-[Artificial Intelligence](ArtificialIntelligence.md)<br>
+[Megalinter](Megalinter.md)<br>
 [Secrutiy Tools](SecrutiyTools.md)<br>
