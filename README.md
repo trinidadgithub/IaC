@@ -4,42 +4,48 @@ This repository contains a collection of infrastructure-as-code (IaC) projects a
 
 ## Directory Structure
 
-- **aws/**  
+- **[aws](./aws)/**  
   Contains general work related to AWS features and services. This directory includes scripts, configurations, and IaC files for various AWS components.
 
-- **azure/**
+- **[azure](./azure)/**
   Contains information regarding how to setup your Windows workstation to be running Azure CLI commands.
 
-- **concourse-terraform-windows/**
+- **[concourse-terraform-windows](./concourse-terraform-windows)/**
   A study on deploying concourse as a docker container framework on Windows.  
 
-- **concourse-terraform-unix/**
+- **[concourse-terraform-unix](./concourse-terraform-unix)/**
   A study on deploying concourse as a docker container framework on Windows.  
 
-- **docker/**  
+- **[docker](./docker)/**  
   Holds Docker-related work, primarily focused on containerizing AWS features and deploying containerized applications within the AWS ecosystem.
 
-- **helm-terraform-js-app/**  
+- **[helm-terraform-js-app](./helm-terraform-js-app)/**  
   Focused on deploying a JavaScript application using Terraform with Helm support. This directory demonstrates a complete infrastructure setup for Kubernetes deployments using Helm charts.
 
-- **kafka-streams-pipeline/**  
+- **[kafka-streams-pipeline](./kafka-streams-pipeline)/**  
   Provides an example pipeline using Kafka Streams, showing how to build and deploy data streaming applications using Kafka.
 
-- **sli_app/**  
+- **[sli_app](./sli_app)/**  
   An example deployment showcasing a Service Level Indicator (SLI) application. It integrates Terraform, Prometheus, Grafana, Docker, and cAdvisor to monitor and maintain service levels.
 
-- **terraform-aws-eks/**  
+- **[terraform-aws-eks](./terraform-aws-eks)/**  
   Contains work specific to deploying AWS EKS (Elastic Kubernetes Service) using Terraform. This directory provides scripts and configurations to automate the setup of a complete EKS cluster on AWS.
 
-- **terraform-docker-iot/**
+- **[terraform-docker-iot](./terraform-docker-iot)/**
 
   Illustrates how to deploy an AWS IoT thing (python based) on Docker using Terraform
 
-- **sre/**
+- **[sre](./docs/SRE.md)/**
 
   Practical information for becoming a successful Site Reliability Engineering professional
 
 - **[DevOps](./docs/DevOps.md)/**
+  
+  Information regarding DevOps practices
+
+- **[docs](./docs)/**
+  
+  Documentation of tooling for SRE and DevOps
 
 ## Getting Started
 
