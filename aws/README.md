@@ -160,4 +160,14 @@ If you prefer using Linux tools and commands within your Windows environment, yo
 wsl --install
 ```
 
+## 14. Optional: Install linters for code, formatting, XML, and yaml (etc.)
+
+### Terraform
+- TFLint: A linter specifically designed for Terraform. It checks for best practices, AWS-specific rules, deprecated features, and potential misconfigurations.
+- Terraform Validate: A built-in command in the Terraform CLI that validates the syntax and configuration files against the schema.
+- Checkov: A security-focused tool that analyzes Terraform, CloudFormation, and Kubernetes files for misconfigurations.
+- terrascan: A static code analyzer that helps identify security and compliance violations in Infrastructure as Code.
+- Infracost: While primarily a cost estimation tool, it also serves as a valuable linter by highlighting inefficient or overly expensive resources.
+
+### Future linters will be added.
 
