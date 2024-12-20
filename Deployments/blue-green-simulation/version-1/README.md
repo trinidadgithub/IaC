@@ -25,7 +25,7 @@ Setup Instructions
 Clone the Repository:
 ```
 git clone git@github.com:trinidadgithub/IaC.git
-cd Deployments/blue-green-deployment
+cd Deployments/blue-green-deployment/version-1
 ```
 Build and Start Containers: Run the following command to build and start the containers:
 ```bash
