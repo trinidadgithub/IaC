@@ -26,7 +26,7 @@ This project is designed to deploy Concourse CI/CD with Docker containers using 
 - Terraform: Version ~> 2.23.0 of kreuzwerker/docker provider is used.
 - Vault: Running instance of HashiCorp Vault.  To run a dev vault instance:  
 ```bash
-ault server -dev
+vault server -dev
 ```
 - Linux based host like Ubuntu
 
