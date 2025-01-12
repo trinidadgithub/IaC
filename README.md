@@ -63,6 +63,8 @@ To work with any of the directories, navigate to the respective folder and follo
 - **Programming Languages**:  Python, C, Go, JavaScript, Java, .Net (core), and or Typescript, etc. for writing basic programs
 - **Programming Frameworks**: Python: Django, Flask, Pytorc, Go: Gin, Echo, Beego; Javascript:  React, angular, Next.js, etc.
 - **Oracle's Virtual Box**: Used to manage and deploy services to virtual machines.
+- **Kubernetes**: Used to orchestrate container management.
+- **Puppet**: Used to manage deployment of infrastructure.
 
 Optional:
 
