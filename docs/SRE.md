@@ -41,7 +41,8 @@
 - Reliability Engineering: Implementing practices and tools to ensure systems are reliable under unpredictable conditions.
 - Chaos Engineering: Introducing failures into the system deliberately to test its resilience.
 - Key Resource:
-	- Principles of Reliability Engineering: [Reliability Engineering 101 – Definition, Goals, Techniques](https://limblecmms.com/blog/reliability-engineering/)  
+ 	- Key Principles every Reliability Engineering should know: https://www.armsreliability.com/page/resources/blog/key-principles-every-reliability-engineer-should-know
+	- Principles of Reliability Engineering: https://limblecmms.com/blog/reliability-engineering/
         - The Principles of Chaos Engineering: https://principlesofchaos.org/
       
 **9. SRE Tools and Technology Stack**
