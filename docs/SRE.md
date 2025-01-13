@@ -46,7 +46,7 @@
       
 **9. SRE Tools and Technology Stack**
 
-	Common tools include Prometheus (monitoring), Grafana (visualization), Terraform (infrastructure as code), Kubernetes (container orchestration), and Ansible (configuration management).
+- Common tools include Prometheus (monitoring), Grafana (visualization), Terraform (infrastructure as code), Kubernetes (container orchestration), and Ansible (configuration management).
 - Key Resource:
 	- SRE Tools and Practices: https://cloud.google.com/sre
 	- Prometheus Monitoring: https://prometheus.io/docs/introduction/overview/
