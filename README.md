@@ -78,5 +78,5 @@ This project is licensed under the MIT License. See the [LICENSE](./LICENSE) fil
 
 ## Contributing
 
-Feel free to submit issues, pull requests, or suggestions to improve the project. Contributions are welcome!
+Feel free to submit issues, pull requests, or suggestions to improve the project. Contributions are welcome!  
 
