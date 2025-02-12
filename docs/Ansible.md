@@ -48,7 +48,7 @@ Ansible is a powerful open-source automation tool that enables you to manage inf
 10. Common Use Cases for Ansible  
 
     • Configuration Management: Automating the setup and maintenance of servers, ensuring consistency across environments.  
-    • Application Deployment: Managing the deployment of applications, databases, and middleware across multiple systems.
+    • Application Deployment: Managing the deployment of applications, databases, and middleware across multiple systems.  
     • Patch Management and Security Compliance: Keeping systems updated and enforcing security policies at scale.  
     • Cloud Automation: Provisioning and managing cloud infrastructure across AWS, Azure, GCP, and more.  
     • Network Automation: Configuring network devices from vendors like Cisco, Juniper, and Arista.  
