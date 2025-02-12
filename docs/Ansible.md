@@ -2,7 +2,7 @@ Ansible is a powerful open-source automation tool that enables you to manage inf
 
 1. Agentless Architecture
 
-    - No Agents Required: Unlike many other automation tools, Ansible does not require agents or additional software to be installed on managed nodes. It uses SSH (for Linux/macOS) or WinRM (for Windows) to communicate with remote systems.
+    • No Agents Required: Unlike many other automation tools, Ansible does not require agents or additional software to be installed on managed nodes. It uses SSH (for Linux/macOS) or WinRM (for Windows) to communicate with remote systems.
     - Lightweight and Simple: With no daemons or persistent services running on target systems, Ansible minimizes overhead and security risks.
 
 2. Infrastructure as Code (IaC)
