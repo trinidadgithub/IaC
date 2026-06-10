@@ -1,16 +1,16 @@
 output "flask_app_url" {
   description = "the URL to access flask application"
-  value = "http://localhost:${var.flask_port}"
+  value       = "http://localhost:${var.flask_port}"
 }
 
 output "prometheus_url" {
   description = "The URL to access prometheus"
-  value = "http://localhost:${var.prometheus_port}"
+  value       = "http://localhost:${var.prometheus_port}"
 }
 
 output "grafana_url" {
   description = "The URL to access grafana"
-  value = "http://localhost:${var.grafana_port}"
+  value       = "http://localhost:${var.grafana_port}"
 }
 
 output "cadvisor_url" {

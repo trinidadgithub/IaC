@@ -114,6 +114,8 @@ terraform apply
 Open Prometheus UI and ensure that cAdvisor and sli_app targets are listed as 'UP'
 * URL: http://localhost:9090/targets
 
+The cAdvisor container uses the maintained `gcr.io/cadvisor/cadvisor` image with host filesystem and cgroup mounts so it can run on current Docker hosts using cgroup v2.
+
 ### Step 6: View Grafana Dashboard
 Log in to Grafana and view the pre-provisioned SLI dashboard. 
 The login credentials are defined in the environment variables:

@@ -98,18 +98,20 @@ resource "docker_container" "grafana" {
   }
 
   provisioner "local-exec" {
-  command = "sleep 30"
+    command = "sleep 30"
   }
 }
 
 # cAdvisor Container
 resource "docker_image" "cadvisor_image" {
-  name = "google/cadvisor:latest"
+  name = "gcr.io/cadvisor/cadvisor:v0.52.1"
 }
 
 resource "docker_container" "cadvisor" {
-  name  = "cadvisor"
-  image = docker_image.cadvisor_image.name
+  name       = "cadvisor"
+  image      = docker_image.cadvisor_image.name
+  privileged = true
+
   networks_advanced {
     name = docker_network.sli_network.name
   }
@@ -120,13 +122,26 @@ resource "docker_container" "cadvisor" {
   }
 
   volumes {
-    host_path      = "/var/run/docker.sock"
-    container_path = "/var/run/docker.sock"
+    host_path      = "/"
+    container_path = "/rootfs"
+    read_only      = true
+  }
+
+  volumes {
+    host_path      = "/var/run"
+    container_path = "/var/run"
+    read_only      = true
   }
 
   volumes {
     host_path      = "/sys"
     container_path = "/sys"
+    read_only      = true
+  }
+
+  volumes {
+    host_path      = "/sys/fs/cgroup"
+    container_path = "/sys/fs/cgroup"
     read_only      = true
   }
 
@@ -145,8 +160,8 @@ provider "grafana" {
 
 # Grafana Service Account and Token
 resource "grafana_service_account" "my_service_account" {
-  name = "my-automation-sa"
-  role = "Admin"
+  name       = "my-automation-sa"
+  role       = "Admin"
   depends_on = [docker_container.grafana]
 }
 
@@ -158,7 +173,7 @@ resource "grafana_service_account_token" "my_sa_token" {
 data "grafana_data_source" "prometheus" {
   name = "Prometheus"
 
-  depends_on = [ docker_container.grafana]
+  depends_on = [docker_container.grafana]
 }
 
 resource "grafana_folder" "infrastructure_monitoring" {
@@ -179,5 +194,4 @@ resource "grafana_dashboard" "docker_insights_dashboard" {
   folder      = grafana_folder.infrastructure_monitoring.id # Use folder ID
   overwrite   = true
 }
-
 
