@@ -87,8 +87,8 @@ To deploy this Service Level Indicator (SLI) monitoring example locally using Do
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/trinidadgithub/IaC-sli-app.git
-cd sli-monitoring
+git clone https://github.com/trinidadgithub/IaC.git
+cd IaC/sli_app
 ```
 ### Step 2: Set Environment Variables
 ```bash
