@@ -50,7 +50,7 @@ resource "docker_container" "flask_app" {
 
 # Prometheus Container
 resource "docker_image" "prometheus_image" {
-  name = "prom/prometheus:latest"
+  name = "prom/prometheus:v2.55.1"
 }
 
 resource "docker_container" "prometheus" {
@@ -73,7 +73,7 @@ resource "docker_container" "prometheus" {
 
 # Grafana Container
 resource "docker_image" "grafana_image" {
-  name = "grafana/grafana:latest"
+  name = "grafana/grafana:11.3.0"
 }
 
 resource "docker_container" "grafana" {
@@ -182,16 +182,18 @@ resource "grafana_folder" "infrastructure_monitoring" {
   depends_on = [docker_container.grafana]
 }
 
-data "template_file" "dashboard_json" {
-  template = file("${path.module}/grafana/dashboards/system-docker-monitoring.json")
-  vars = {
-    prometheus_uid = data.grafana_data_source.prometheus.uid
-  }
-}
-
 resource "grafana_dashboard" "docker_insights_dashboard" {
-  config_json = data.template_file.dashboard_json.rendered
-  folder      = grafana_folder.infrastructure_monitoring.id # Use folder ID
-  overwrite   = true
+  config_json = templatefile("${path.module}/grafana/dashboards/system-docker-monitoring.json", {
+    prometheus_uid = data.grafana_data_source.prometheus.uid
+  })
+  folder    = grafana_folder.infrastructure_monitoring.id # Use folder ID
+  overwrite = true
 }
 
+resource "grafana_dashboard" "sli_lab_dashboard" {
+  config_json = templatefile("${path.module}/grafana/dashboards/sli-lab-dashboard.json", {
+    prometheus_uid = data.grafana_data_source.prometheus.uid
+  })
+  folder    = grafana_folder.infrastructure_monitoring.id
+  overwrite = true
+}

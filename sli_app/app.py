@@ -1,81 +1,86 @@
 from flask import Flask, jsonify, request
-import time
+from prometheus_client import Counter, Histogram, start_http_server
 import random
-from prometheus_client import start_http_server, Counter, Histogram
-import threading
-import requests
+import time
 
 app = Flask(__name__)
 
-# Prometheus metrics
-REQUEST_COUNT = Counter('request_count', 'Total Request Count', ['endpoint', 'http_status'])
-REQUEST_LATENCY = Histogram('request_latency_seconds', 'Request latency', ['endpoint'])
+REQUEST_COUNT = Counter(
+    "sli_http_requests",
+    "Total HTTP requests handled by the SLI lab app",
+    ["endpoint", "method", "status"],
+)
 
-# Start Prometheus metrics server on port 8000
-start_http_server(8000)
+REQUEST_LATENCY = Histogram(
+    "sli_http_request_duration_seconds",
+    "HTTP request latency for the SLI lab app",
+    ["endpoint", "method", "status"],
+    buckets=(0.05, 0.1, 0.25, 0.5, 1.0, 1.5, 2.0, 3.0, 5.0, float("inf")),
+)
 
 
-@app.route('/')
+def record_request(endpoint, method, status, start_time):
+    status_text = str(status)
+    REQUEST_COUNT.labels(endpoint=endpoint, method=method, status=status_text).inc()
+    REQUEST_LATENCY.labels(endpoint=endpoint, method=method, status=status_text).observe(
+        time.time() - start_time
+    )
+
+
+@app.route("/")
 def index():
-    return jsonify({"message": "Welcome to the SLI monitoring example!"}), 200
+    start_time = time.time()
+    status = 200
+    record_request("/", "GET", status, start_time)
+    return jsonify({"message": "Welcome to the SLI monitoring example"}), status
 
 
-@app.route('/api/data', methods=['GET'])
+@app.route("/healthz")
+def healthz():
+    start_time = time.time()
+    status = 200
+    record_request("/healthz", "GET", status, start_time)
+    return jsonify({"status": "ok"}), status
+
+
+@app.route("/api/data", methods=["GET"])
 def get_data():
     start_time = time.time()
 
-    # Simulate processing time
     processing_time = random.uniform(0.1, 1.5)
     time.sleep(processing_time)
 
-    # Simulate random errors
-    status_code = 500 if random.random() < 0.1 else 200
-    REQUEST_COUNT.labels(endpoint='/api/data', http_status=status_code).inc()
-    REQUEST_LATENCY.labels(endpoint='/api/data').observe(time.time() - start_time)
+    status = 500 if random.random() < 0.10 else 200
+    record_request("/api/data", "GET", status, start_time)
 
-    if status_code == 500:
-        return jsonify({"error": "Internal Server Error"}), 500
+    if status == 500:
+        return jsonify({"error": "Internal Server Error"}), status
 
-    return jsonify({"data": "Here's some data!", "processing_time": processing_time}), 200
+    return jsonify({"data": "example", "processing_time": processing_time}), status
 
 
-@app.route('/api/submit', methods=['POST'])
+@app.route("/api/submit", methods=["POST"])
 def submit_data():
     start_time = time.time()
     data = request.json
 
-    if not data or 'value' not in data:
-        REQUEST_COUNT.labels(endpoint='/api/submit', http_status=400).inc()
-        return jsonify({"error": "Bad Request, 'value' is required"}), 400
+    if not data or "value" not in data:
+        status = 400
+        record_request("/api/submit", "POST", status, start_time)
+        return jsonify({"error": "Bad Request, 'value' is required"}), status
 
-    # Simulate random latency
     processing_time = random.uniform(0.2, 2.0)
     time.sleep(processing_time)
 
-    # Simulate success/failure
-    status_code = 500 if random.random() < 0.05 else 200
-    REQUEST_COUNT.labels(endpoint='/api/submit', http_status=status_code).inc()
-    REQUEST_LATENCY.labels(endpoint='/api/submit').observe(time.time() - start_time)
+    status = 500 if random.random() < 0.05 else 200
+    record_request("/api/submit", "POST", status, start_time)
 
-    if status_code == 500:
-        return jsonify({"error": "Failed to process data"}), 500
+    if status == 500:
+        return jsonify({"error": "Failed to process data"}), status
 
-    return jsonify({"message": "Data received successfully", "processing_time": processing_time}), 200
+    return jsonify({"message": "Data received", "processing_time": processing_time}), status
 
 
-# Background thread to simulate network traffic
-def simulate_network_traffic():
-    while True:
-        try:
-            response = requests.get("https://jsonplaceholder.typicode.com/todos/1")
-            print(f"Network traffic generated: Status Code {response.status_code}")
-        except Exception as e:
-            print(f"Error generating traffic: {e}")
-        time.sleep(5)  # Simulate traffic every 5 seconds
-
-
-# Start the network traffic simulation in a background thread
-threading.Thread(target=simulate_network_traffic, daemon=True).start()
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    start_http_server(8000)
+    app.run(host="0.0.0.0", port=5000)

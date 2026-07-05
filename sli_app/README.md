@@ -1,127 +1,175 @@
-# Service Level Indicator (SLI) Monitoring Example
+# Service Level Indicator (SLI) Lab
 
-This project demonstrates how to monitor and measure **Service Level Indicators (SLIs)** in a web application. It provides practical examples and insights into implementing SLIs to assess and improve the performance, reliability, and quality of services from the user's perspective.
+This project is a small local lab for practicing Service Level Indicators (SLIs) with a Flask application, Prometheus, Grafana, Docker, and Terraform.
 
-## Introduction
+The application intentionally adds variable latency and occasional failures so you can observe practical reliability signals:
 
-**Service Level Indicators (SLIs)** are crucial metrics in Site Reliability Engineering (SRE) that quantify specific aspects of a service's behavior. They serve as the foundation for defining Service Level Objectives (SLOs) and Service Level Agreements (SLAs), enabling organizations to focus on what truly matters to their customers.
+- Availability
+- Error rate
+- Request rate
+- p95 and p99 latency
+- Short-window vs long-window error-rate trends
 
-## Key Concepts
+This is not a production architecture. It is a learning environment for understanding how SLIs map to real service behavior.
 
-### Definition
+## Architecture
 
-An **SLI** is a quantitative measure of some aspect of a service's behavior. It captures a specific, observable aspect of a system’s performance, such as:
+Terraform creates a local Docker network and containers for:
 
-- **Latency**
-- **Availability**
-- **Throughput**
-- **Error Rate**
+| Component | Purpose | Local URL |
+|---|---|---|
+| Flask app | Example service | <http://localhost:5000> |
+| App metrics | Prometheus metrics endpoint | <http://localhost:8000> |
+| Prometheus | Metrics storage/querying | <http://localhost:9090> |
+| Grafana | Dashboards | <http://localhost:3000> |
+| cAdvisor | Container metrics | <http://localhost:8080> |
 
-### Importance
+Prometheus scrapes the Flask app through the shared Docker network at `sli_app:8000`.
 
-SLIs provide an objective way to assess whether a service is meeting user expectations and help guide operational priorities and improvements.
+## Metrics
 
-### Relation to SLOs and SLAs
+The Flask app exposes these custom metrics:
 
-- **SLIs**: The metrics measuring service performance (e.g., error rate).
-- **SLOs**: The target or threshold for those metrics (e.g., error rate < 1%).
-- **SLAs**: Formal agreements based on SLOs, specifying penalties for not meeting targets.
+| Metric | Type | Labels | Purpose |
+|---|---|---|---|
+| `sli_http_requests_total` | Counter | `endpoint`, `method`, `status` | Request volume and error-rate analysis |
+| `sli_http_request_duration_seconds_bucket` | Histogram | `endpoint`, `method`, `status`, `le` | p95/p99 latency analysis |
 
-### Characteristics of Good SLIs
+The metrics are served from a separate Prometheus endpoint on port `8000`.
 
-- **Representative**: Accurately reflects the user experience.
-- **Measurable**: Can be captured and quantified reliably.
-- **Actionable**: Leads to insights that can improve service reliability.
+## Deploy Locally
 
-## Common Real-World Examples of SLIs
-
-### Availability
-
-Measures the uptime of a service, often expressed as a percentage (e.g., 99.9% availability over a month).
-
-**Example**: Tracking the percentage of successful HTTP 200 responses against total requests in a web application.
-
-### Latency
-
-The time taken for a service to respond to a request, typically measured in milliseconds (ms).
-
-**Example**: Monitoring the 95th percentile latency of video start times in a streaming service to ensure it remains under 2 seconds.
-
-### Error Rate
-
-The ratio of failed requests to the total number of requests.
-
-**Example**: An e-commerce platform tracking the percentage of API requests that return 5xx server errors.
-
-### Throughput
-
-Measures the number of successful transactions or operations over a given period.
-
-**Example**: A payment processing service monitoring the number of successful transactions per second to gauge system load capacity.
-
-### Resource Utilization
-
-Tracks how efficiently resources (CPU, memory, disk I/O, etc.) are used.
-
-**Example**: A cloud-based database service ensuring CPU usage doesn’t exceed 70% over a given interval.
-
-### Quality of Service
-
-Measures aspects like data freshness, accuracy, or completeness.
-
-**Example**: A data analytics platform tracking how up-to-date data is within a reporting dashboard, ensuring data isn’t older than 5 minutes.
-
-## Practical Example Scenario
-
-**Cloud Storage Service**
-
-- **SLI 1: Availability** - Measure the percentage of successful file uploads and downloads over a month.
-- **SLI 2: Latency** - Measure the 90th percentile latency for file retrieval requests.
-- **SLI 3: Error Rate** - Monitor the proportion of failed file upload/download attempts due to server errors.
-
-By carefully selecting SLIs that represent user expectations, organizations can focus on improving the aspects of their service that truly matter to customers, leading to more reliable and performant systems.
-
-## Deployment Instructions
-
-To deploy this Service Level Indicator (SLI) monitoring example locally using Docker and Terraform, follow these steps:
-
-### Step 1: Clone the Repository
 ```bash
 git clone https://github.com/trinidadgithub/IaC.git
-cd IaC/sli_app
-```
-### Step 2: Set Environment Variables
-```bash
-export GRAFANA_ADMIN_USER=admin
-export GRAFANA_ADMIN_PASSWORD=admin
-```
-### Step 3: Configure Terraform
-```bash
-cd terraform
+cd IaC/sli_app/terraform
+
 terraform init
 terraform validate
-terraform plan
-# When you are ready to deploy
 terraform apply
 ```
-### Step 4: Access the Services
-* Grafana: http://localhost:3000
-* Prometheus: http://localhost:9090
-* cAdvisor: http://localhost:8080
-* SLI App: http://localhost:5000
 
-### Step 5: Verify Prometheus Targets
-Open Prometheus UI and ensure that cAdvisor and sli_app targets are listed as 'UP'
-* URL: http://localhost:9090/targets
+Grafana is configured with:
 
-The cAdvisor container uses the maintained `gcr.io/cadvisor/cadvisor` image with host filesystem and cgroup mounts so it can run on current Docker hosts using cgroup v2.
+```text
+username: admin
+password: admin01
+```
 
-### Step 6: View Grafana Dashboard
-Log in to Grafana and view the pre-provisioned SLI dashboard. 
-The login credentials are defined in the environment variables:
-* Username: $GRAFANA_ADMIN_USER
-* Password: $GRAFANA_ADMIN_PASSWORD
+## Generate Traffic
+
+From the `sli_app` directory:
+
+```bash
+chmod +x scripts/generate_traffic.sh
+./scripts/generate_traffic.sh
+```
+
+Optional controls:
+
+```bash
+ITERATIONS=100 SLEEP_SECONDS=0 ./scripts/generate_traffic.sh
+```
+
+For richer Grafana graphs, run the script a few times or increase `ITERATIONS`.
+
+The script sends:
+
+- `GET /api/data` requests
+- valid `POST /api/submit` requests
+- occasional invalid `POST /api/submit` requests to produce expected `400` responses
+
+## PromQL Examples
+
+Request rate:
+
+```promql
+sum by (endpoint, method) (rate(sli_http_requests_total[5m]))
+```
+
+Availability, counting 5xx responses as service failures:
+
+```promql
+1 - (
+  sum(rate(sli_http_requests_total{status=~"5.."}[5m]))
+  /
+  sum(rate(sli_http_requests_total[5m]))
+)
+```
+
+5xx error rate:
+
+```promql
+sum(rate(sli_http_requests_total{status=~"5.."}[5m]))
+/
+sum(rate(sli_http_requests_total[5m]))
+```
+
+p95 latency:
+
+```promql
+histogram_quantile(
+  0.95,
+  sum by (le, endpoint, method) (
+    rate(sli_http_request_duration_seconds_bucket[5m])
+  )
+)
+```
+
+p99 latency:
+
+```promql
+histogram_quantile(
+  0.99,
+  sum by (le, endpoint, method) (
+    rate(sli_http_request_duration_seconds_bucket[5m])
+  )
+)
+```
+
+Short-window vs long-window error-rate trend:
+
+```promql
+sum(rate(sli_http_requests_total{status=~"5.."}[5m]))
+/
+sum(rate(sli_http_requests_total[5m]))
+```
+
+```promql
+sum(rate(sli_http_requests_total{status=~"5.."}[30m]))
+/
+sum(rate(sli_http_requests_total[30m]))
+```
+
+## Grafana Dashboards
+
+Terraform provisions two dashboards:
+
+- **Docker/container monitoring** through cAdvisor
+- **SLI Lab - Flask Service** for request rate, availability, error rate, latency percentiles, status code breakdown, and short-window vs long-window error-rate comparison
+
+The SLI dashboard is intentionally small. It focuses on operational questions rather than every metric available.
+
+## SLI Notes
+
+Availability should be based on request success ratio, not container uptime.
+
+4xx responses require a policy decision. In many API SLIs, expected client errors are excluded from service failure calculations. 5xx responses usually count as service-side failures.
+
+Latency should be reviewed with percentiles, not only averages. p95 and p99 expose tail behavior that average latency can hide.
+
+Short windows catch fast-moving problems but can be noisy. Longer windows show sustained behavior but may smooth out spikes. Looking at both helps distinguish a transient blip from a degrading service.
+
+## Cleanup
+
+```bash
+cd terraform
+terraform destroy
+```
+
+## Related Field Note
+
+This lab is referenced by the field note **Building A Small SLI Lab With Flask, Prometheus, And Grafana** in the companion site repository.
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+This project is licensed under the MIT License. See [LICENSE](./LICENSE).
